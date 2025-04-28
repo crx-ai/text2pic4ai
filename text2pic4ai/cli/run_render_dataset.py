@@ -12,7 +12,7 @@ global_font_store: FontStore | None = None
 global_renderer: GlyphRenderer | None = None
 
 
-def get_renderer(font_file_map: dict[FontLanguage, str]):
+def get_renderer(font_file_map: dict[FontLanguage, str]) -> GlyphRenderer:
     global global_font_store, global_renderer
 
     if global_font_store is None or global_renderer is None:
@@ -22,7 +22,7 @@ def get_renderer(font_file_map: dict[FontLanguage, str]):
     return global_renderer
 
 
-def render_text(text_column: str, pixel_size: int, font_file_map: dict[FontLanguage, str], example: dict):
+def render_text(text_column: str, pixel_size: int, font_file_map: dict[FontLanguage, str], limit: int, example: dict):
     renderer = get_renderer(font_file_map)
     text = example[text_column]
     return {"bitmaps": renderer.render(text, pixel_size=(pixel_size, pixel_size))}
@@ -36,6 +36,7 @@ def main():
     parser.add_argument("--text-column", type=str, default="text")
     parser.add_argument("--num-jobs", "-j", type=int, default=8)
     parser.add_argument("--font-map", type=dict, default={})
+    parser.add_argument("--limit", type=int, default=None)
     args = parser.parse_args()
 
     font_file_map = args.font_map or {
@@ -46,7 +47,7 @@ def main():
 
     dataset = load_dataset(args.dataset)
     dataset.map(
-        partial(render_text, args.text_column, args.pixel_size, font_file_map),
+        partial(render_text, args.text_column, args.pixel_size, font_file_map, args.limit),
         num_proc=args.num_jobs,
         writer_batch_size=10000,
     )

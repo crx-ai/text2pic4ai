@@ -15,9 +15,9 @@ __all__ = ["GlyphRenderer"]
 
 
 class GlyphRenderer:
-    def __init__(self, store: FontStore):
+    def __init__(self, store: FontStore, *, cache_size: int = 500000):
         self.store = store
-        self.render_cache = LRUCache(maxsize=100000)
+        self.render_cache = LRUCache(maxsize=cache_size)
         self.lock = threading.Lock()
 
     def render(
@@ -28,12 +28,13 @@ class GlyphRenderer:
         _char: str | None = None,
         pixel_size: tuple[int, int] = None,
         weight: int | None = None,
+        limit: int | None = None,
     ) -> np.ndarray | None | list[np.ndarray]:
         if _char is None:
             if len(string) == 1:
                 return self.render(language=language, _char=string, pixel_size=pixel_size, weight=weight)
             else:
-                return [self.render(language=language, _char=c, pixel_size=pixel_size, weight=weight) for c in string]
+                return [self.render(language=language, _char=c, pixel_size=pixel_size, weight=weight) for c in string[:limit]]
         
         try:
             key = (_char, pixel_size, weight)
