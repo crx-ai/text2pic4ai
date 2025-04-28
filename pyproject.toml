@@ -1,0 +1,32 @@
+[project]
+name = "text2pic4ai"
+version = "0.0.1"
+description = "A fast text renderer for pixel language model research"
+authors = [
+    {name = "Raphael Tang",email = "tang.raphael@gmail.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "freetype-py (>=2.5.1,<3.0.0)",
+    "torch (>=2.7.0,<3.0.0)",
+    "torchvision (>=0.22.0,<0.23.0)",
+    "torchaudio (>=2.7.0,<3.0.0)",
+    "trl[peft] (>=0.17.0,<0.18.0)",
+    "datasets (>=3.5.0,<4.0.0)",
+    "cachetools (>=5.5.2,<6.0.0)",
+]
+package-mode = true
+
+[[tool.poetry.source]]
+name = "torch"
+url = "https://download.pytorch.org/whl/cu118"
+priority = "supplemental"
+
+[tool.poetry]
+packages = [{ include = "text2pic4ai" }]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
