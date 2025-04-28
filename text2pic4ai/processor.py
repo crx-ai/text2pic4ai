@@ -32,13 +32,14 @@ class BitmapSentenceProcessingKwargs(ProcessingKwargs, total=False):
 class BitmapSentenceProcessor(ProcessorMixin):
     attributes = []
     valid_kwargs = ["pixel_size"]
-    optional_attributes = ["pixel_size", "font_file_map"]
+    optional_attributes = ["pixel_size", "font_file_map", "font_weight"]
     
     def __init__(self, *args, **kwargs):        
         super().__init__(*args, **kwargs)
         self.font_store = FontStore.from_path(self.font_file_map)
         self.renderer = GlyphRenderer(self.font_store)
         self.pixel_size = self.pixel_size or (28, 28)
+        self.font_weight = self.font_weight or 500
     
     def merge_bitmaps(self, bitmaps: list[np.ndarray]) -> np.ndarray:
         resized_bitmaps = []
@@ -82,6 +83,7 @@ class BitmapSentenceProcessor(ProcessorMixin):
             bitmaps = self.renderer.render(
                 string,
                 pixel_size=kwargs["text_kwargs"]["pixel_size"],
+                weight=self.font_weight,
                 limit=kwargs["text_kwargs"]["max_length"] if kwargs["text_kwargs"]["truncation"] else None
             )
             bitmaps_list.append(bitmaps)
