@@ -56,7 +56,7 @@ class BitmapSentenceProcessor(ProcessorMixin):
             start_x = pad_width
 
             new_bitmap[start_y:start_y + current_height, start_x:start_x + current_width] = bitmap
-            resized_bitmaps.append(new_bitmap)
+            resized_bitmaps.append(new_bitmap[:target_height, :target_width])
 
         return np.hstack(resized_bitmaps)
 
