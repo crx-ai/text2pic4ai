@@ -5,8 +5,9 @@ from pathlib import Path
 from datasets import load_dataset
 import pyarrow as pa
 
-from text2pic4ai.font import FontLanguage, GlyphRenderer
-from text2pic4ai.font import FontStore
+from text2pic4ai.freetype import FontLanguage, GlyphRenderer
+from text2pic4ai.freetype import FontStore
+from text2pic4ai.processor import BitmapSentenceProcessor
 from text2pic4ai.pyarrow_io import PyArrowBitmapSequenceSerializer
 
 

@@ -2,11 +2,8 @@ import enum
 import threading
 from typing import Callable, Self
 
-import pyarrow as pa
 from cachetools import LRUCache
 import freetype
-from freetype.ft_enums.ft_load_flags import FT_LOAD_DEFAULT
-from freetype.ft_enums.ft_render_modes import FT_RENDER_MODE_NORMAL
 import numpy as np
 
 
@@ -81,7 +78,7 @@ class GlyphRenderer:
         face = self.store.get_face(char=_char)
 
         if face is None:
-            return None
+            return np.zeros(pixel_size or (1, 1), dtype=np.uint8)
 
         if weight:
             face.set_var_design_coords((weight,))
@@ -93,7 +90,7 @@ class GlyphRenderer:
             face.load_char(_char)
 
         glyph = face.glyph
-        bitmap = 255 - np.array(glyph.bitmap.buffer, dtype=np.uint8).reshape(glyph.bitmap.rows, glyph.bitmap.width)
+        bitmap = np.array(glyph.bitmap.buffer, dtype=np.uint8).reshape(glyph.bitmap.rows, glyph.bitmap.width)
         self.render_cache[key] = bitmap
 
         return bitmap
