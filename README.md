@@ -1,7 +1,7 @@
 # text2pic4ai
 [![PyPi version](https://badgen.net/pypi/v/text2pic4ai?color=blue)](https://pypi.org/project/text2pic4ai) [![Downloads](https://static.pepy.tech/badge/text2pic4ai)](https://pepy.tech/project/text2pic4ai)
 
-A fast text renderer built with the HuggingFace ecosystem.
+A fast text renderer built for the HuggingFace ecosystem.
 
 ## Getting Started
 
