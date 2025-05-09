@@ -1,11 +1,14 @@
+import importlib.resources as pkg_resources
 from typing import TypedDict
+
 import numpy as np
 import torch
 from transformers import ProcessorMixin, BatchEncoding
 from transformers.processing_utils import ProcessingKwargs, CommonKwargs, Unpack
 from transformers.tokenization_utils_base import TextInput
 
-from text2pic4ai.freetype import FontStore, GlyphRenderer
+from .._pkg_data import get_pkg_data_path
+from .._freetype import FontStore, GlyphRenderer, FontLanguage
 
 
 class BitmapSentenceProcessingKwargs(ProcessingKwargs, total=False):
@@ -29,6 +32,20 @@ class BitmapSentenceProcessingKwargs(ProcessingKwargs, total=False):
     common_kwargs: Common
 
 
+def _get_default_font_file_map() -> dict[FontLanguage, str]:
+    base_path = get_pkg_data_path()
+
+    noto_sans_path = base_path / "Noto_Sans"
+    noto_sans_sc_path = base_path / "Noto_Sans_SC"
+    noto_sans_tc_path = base_path / "Noto_Sans_TC"
+
+    return {
+        FontLanguage.ENGLISH: str(noto_sans_path / "NotoSans-VariableFont_wdth,wght.ttf"),
+        FontLanguage.SIMPLIFIED_CHINESE: str(noto_sans_sc_path / "NotoSansSC-VariableFont_wght.ttf"),
+        FontLanguage.TRADITIONAL_CHINESE: str(noto_sans_tc_path / "NotoSansTC-VariableFont_wght.ttf"),
+    }
+
+
 class BitmapSentenceProcessor(ProcessorMixin):
     attributes = []
     valid_kwargs = ["pixel_size"]
@@ -36,9 +53,9 @@ class BitmapSentenceProcessor(ProcessorMixin):
     
     def __init__(self, *args, **kwargs):        
         super().__init__(*args, **kwargs)
-        self.font_store = FontStore.from_path(self.font_file_map)
+        self.font_store = FontStore.from_path(self.font_file_map or _get_default_font_file_map())
         self.renderer = GlyphRenderer(self.font_store)
-        self.pixel_size = self.pixel_size or (28, 28)
+        self.pixel_size = self.pixel_size or (14, 14)
         self.font_weight = self.font_weight or 500
     
     def merge_bitmaps(self, bitmaps: list[np.ndarray]) -> np.ndarray:

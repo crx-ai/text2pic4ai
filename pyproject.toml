@@ -25,7 +25,9 @@ url = "https://download.pytorch.org/whl/cu118"
 priority = "supplemental"
 
 [tool.poetry]
-packages = [{ include = "text2pic4ai" }]
+packages = [
+    { include = "text2pic4ai" },
+]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

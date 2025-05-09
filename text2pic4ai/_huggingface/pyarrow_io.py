@@ -5,9 +5,6 @@ import pyarrow as pa
 import datasets
 
 
-__all__ = ["PyArrowSerializer", "PyArrowBitmapSequenceSerializer"]
-
-
 class PyArrowSerializer[T, U: pa.DataType](Protocol):
     def serialize(self, data: T) -> dict[str, U]: ...    
     def deserialize(self, columns: dict[str, U]) -> T: ...
