@@ -1,5 +1,5 @@
 # text2pic4ai
-[![Citation](https://img.shields.io/badge/Citation-ACL-orange.svg)](https://gist.github.com/daemon/639de6fea584d7df1a62f04a2ea0cdad) [![PyPi version](https://badgen.net/pypi/v/daam?color=blue)](https://pypi.org/project/daam) [![Downloads](https://static.pepy.tech/badge/daam)](https://pepy.tech/project/daam)
+[![PyPi version](https://badgen.net/pypi/v/text2pic4ai?color=blue)](https://pypi.org/project/text2pic4ai) [![Downloads](https://static.pepy.tech/badge/text2pic4ai)](https://pepy.tech/project/text2pic4ai)
 
 A fast text renderer built with the HuggingFace ecosystem.
 
